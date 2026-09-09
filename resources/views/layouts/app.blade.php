@@ -194,7 +194,7 @@
 
             <div class="nav-category">Master Produk</div>
             <ul class="nav-menu">
-                <li><a href="#" class="nav-item"><i class="fa-solid fa-boxes-stacked"></i> Data Produk</a></li>
+                <li><a href="{{ route('products.index') }}" class="nav-item {{ request()->routeIs('products.index') ? 'active' : '' }}"><i class="fa-solid fa-boxes-stacked"></i> Data Produk</a></li>
             </ul>
 
             <div class="nav-category">Manajemen Produksi</div>
