@@ -37,7 +37,7 @@
             background-color: #FFFFFF;
         }
 
-        /* ================= KIRI: PANEL EDITORIAL MAROON ================= */
+        /* LEFT PANEL: EDITORIAL MAROON */
         .left-editorial-panel {
             width: 50%;
             height: 100vh;
@@ -46,11 +46,10 @@
             padding: 40px 48px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Membagi Top, Middle, Bottom secara merata */
+            justify-content: space-between;
             position: relative;
         }
 
-        /* Top Header */
         .brand-top-bar {
             display: flex;
             justify-content: space-between;
@@ -98,6 +97,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .server-status-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .green-dot {
@@ -108,7 +113,6 @@
             box-shadow: 0 0 6px #00E676;
         }
 
-        /* Center Editorial Content (Memaksa Konten Tepat di Tengah Vertikal) */
         .editorial-body-center {
             margin-top: auto;
             margin-bottom: auto;
@@ -166,7 +170,6 @@
             max-width: 440px;
         }
 
-        /* Bottom Feature Grid */
         .editorial-footer {
             border-top: 1px solid rgba(255, 255, 255, 0.12);
             padding-top: 20px;
@@ -205,7 +208,7 @@
             color: rgba(255, 255, 255, 0.35);
         }
 
-        /* ================= KANAN: PANEL FORM MINIMALIST ================= */
+        /* RIGHT PANEL: MINIMALIST FORM */
         .right-form-panel {
             width: 50%;
             height: 100vh;
@@ -254,7 +257,6 @@
             margin-bottom: 24px;
         }
 
-        /* Role Tabs Underline */
         .role-switch-tabs {
             display: flex;
             gap: 24px;
@@ -270,6 +272,8 @@
             cursor: pointer;
             text-decoration: none;
             position: relative;
+            background: none;
+            border: none;
         }
 
         .role-tab-item.active {
@@ -286,7 +290,6 @@
             background-color: var(--brand-red);
         }
 
-        /* Sensor Verification Success Alert */
         .rfid-verified-alert {
             background-color: #E8F8EE;
             border: 1px solid #C2EAD0;
@@ -306,32 +309,52 @@
             font-size: 11px;
         }
 
-        /* Minimalist Input Line Style */
         .input-group-item {
             margin-bottom: 22px;
+            width: 100%;
         }
 
-        .input-group-item label {
-            display: block;
+        /* HEADER LABEL FLEXBOX UNTUK MENJAGA KATA SANDI DAN LUPA SANDI TETAP SEJAJAR */
+        .label-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+
+        .label-header-flex label {
             font-size: 9.5px;
             font-weight: 800;
             letter-spacing: 1px;
             color: #555555;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 0;
+        }
+
+        .btn-lupa-sandi {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--brand-red);
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
         }
 
         .line-input-wrapper {
             position: relative;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .line-input-wrapper input {
             width: 100%;
             border: none;
             border-bottom: 1px solid #D8D8D8;
-            padding: 6px 0;
+            padding: 6px 35px 6px 0; /* Memberi ruang di kanan agar text tidak tertutup tombol 'Lihat' */
             font-size: 12.5px;
             font-weight: 600;
             color: var(--text-dark);
@@ -344,18 +367,16 @@
             border-bottom-color: var(--brand-red);
         }
 
-        .input-link-right {
+        .btn-toggle-lihat {
             position: absolute;
             right: 0;
             font-size: 10.5px;
             font-weight: 700;
-            color: var(--brand-red);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .input-link-right.muted {
             color: #888888;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
         }
 
         .checkbox-remember {
@@ -366,12 +387,14 @@
             font-size: 10.5px;
             color: #555555;
             cursor: pointer;
+            user-select: none;
         }
 
         .checkbox-remember input {
             accent-color: var(--brand-red);
             width: 13px;
             height: 13px;
+            cursor: pointer;
         }
 
         .btn-submit-maroon {
@@ -399,9 +422,8 @@
 </head>
 <body>
 
-    <!-- LEFT PANEL: EDITORIAL MAROON -->
+    <!-- LEFT PANEL -->
     <div class="left-editorial-panel">
-        <!-- Top Header -->
         <div class="brand-top-bar">
             <div class="brand-logo-group">
                 <div class="badge-pc-square">PC</div>
@@ -410,13 +432,12 @@
                     PANGERAN CONDET
                 </div>
             </div>
-            <div class="server-status-btn">
+            <button type="button" class="server-status-btn" onclick="alert('Status Server: Online (Latency 12ms)\nProtokol TLS 1.3 Terenkripsi')">
                 <div class="green-dot"></div>
                 Server Manufaktur Online
-            </div>
+            </button>
         </div>
 
-        <!-- Hero Center Title (Sekarang Terposisi Tepat di Tengah Vertikal) -->
         <div class="editorial-body-center">
             <div class="eyebrow-tag">AUTENTISITAS & PRESISI MUTU</div>
             <h1 class="editorial-title">
@@ -429,7 +450,6 @@
             </p>
         </div>
 
-        <!-- Footer Column Grid -->
         <div class="editorial-footer">
             <div class="footer-cols-grid">
                 <div class="footer-col-item">
@@ -450,11 +470,11 @@
         </div>
     </div>
 
-    <!-- RIGHT PANEL: MINIMALIST FORM -->
+    <!-- RIGHT PANEL -->
     <div class="right-form-panel">
         <div class="form-top-meta">
             <span>Portal Otentikasi Terpadu</span>
-            <span>Rabu, 23:12:00 WIB</span>
+            <span id="liveClock">Kamis, 10:50:30 WIB</span>
         </div>
 
         <div class="form-content-center">
@@ -462,43 +482,45 @@
             <h1>Selamat Datang Kembali</h1>
             <p class="desc-text">Akses langsung ke pengelolaan inventaris, katalog produk, dan stok bahan baku.</p>
 
-            <!-- Role Selector Tabs -->
+            <!-- Role Switcher Tabs -->
             <div class="role-switch-tabs">
-                <a href="#" class="role-tab-item active">Owner</a>
-                <a href="#" class="role-tab-item">Karyawan</a>
+                <button type="button" class="role-tab-item active" id="tabOwner" onclick="switchRole('owner')">Owner</button>
+                <button type="button" class="role-tab-item" id="tabKaryawan" onclick="switchRole('karyawan')">Karyawan</button>
             </div>
 
-            <!-- Sensor Verification Success Alert -->
-            <div class="rfid-verified-alert">
+            <!-- Sensor Alert Box -->
+            <div class="rfid-verified-alert" id="rfidAlert">
                 <i class="fa-solid fa-check"></i>
-                <div>
+                <div id="rfidAlertText">
                     Sensor RFID Terverifikasi: Hendra W. (Presensi Shift 1 Aktif).<br>
-                    <strong>Mengalihkan...</strong>
+                    <strong>Siap masuk sebagai Owner...</strong>
                 </div>
             </div>
 
             <!-- Login Form -->
-            <form action="{{ route('dashboard') }}" method="GET">
+            <form action="{{ route('dashboard') }}" method="GET" id="loginForm">
                 <div class="input-group-item">
-                    <label>EMAIL / USERNAME</label>
+                    <div class="label-header-flex">
+                        <label>EMAIL / USERNAME</label>
+                    </div>
                     <div class="line-input-wrapper">
-                        <input type="text" value="owner@pangerancondet.id" required>
+                        <input type="text" id="inputUsername" value="owner@pangerancondet.id" required placeholder="Masukkan email / username">
                     </div>
                 </div>
 
                 <div class="input-group-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <label style="margin-bottom: 0;">KATA SANDI</label>
-                        <a href="#" class="input-link-right">Lupa Sandi?</a>
+                    <div class="label-header-flex">
+                        <label>KATA SANDI</label>
+                        <button type="button" class="btn-lupa-sandi" onclick="alert('Silakan hubungi Administrator IT Pabrik untuk reset kata sandi Anda.')">Lupa Sandi?</button>
                     </div>
                     <div class="line-input-wrapper">
-                        <input type="password" value="12345678" required>
-                        <span class="input-link-right muted">Lihat</span>
+                        <input type="password" id="inputPassword" value="12345678" required placeholder="Masukkan kata sandi">
+                        <button type="button" class="btn-toggle-lihat" id="btnTogglePassword" onclick="togglePasswordVisibility()">Lihat</button>
                     </div>
                 </div>
 
                 <label class="checkbox-remember">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" checked id="checkRemember">
                     Ingat sesi saya di perangkat ini
                 </label>
 
@@ -511,5 +533,52 @@
         <div><!-- Spacer --></div>
     </div>
 
+    <!-- JAVASCRIPT INTERAKTIF -->
+    <script>
+        // 1. Live Clock
+        function updateClock() {
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const dayName = days[now.getDay()];
+            const timeStr = now.toTimeString().split(' ')[0];
+            document.getElementById('liveClock').innerText = `${dayName}, ${timeStr} WIB`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Role Switcher Tab Interaktif
+        function switchRole(role) {
+            const tabOwner = document.getElementById('tabOwner');
+            const tabKaryawan = document.getElementById('tabKaryawan');
+            const inputUsername = document.getElementById('inputUsername');
+            const rfidText = document.getElementById('rfidAlertText');
+
+            if (role === 'owner') {
+                tabOwner.classList.add('active');
+                tabKaryawan.classList.remove('active');
+                inputUsername.value = 'owner@pangerancondet.id';
+                rfidText.innerHTML = 'Sensor RFID Terverifikasi: Hendra W. (Presensi Shift 1 Aktif).<br><strong>Siap masuk sebagai Owner...</strong>';
+            } else {
+                tabKaryawan.classList.add('active');
+                tabOwner.classList.remove('active');
+                inputUsername.value = 'karyawan@pangerancondet.id';
+                rfidText.innerHTML = 'Sensor RFID Terverifikasi: Bambang S. (Spv Shift Pagi).<br><strong>Siap masuk sebagai Karyawan...</strong>';
+            }
+        }
+
+        // 3. Toggle Show/Hide Password
+        function togglePasswordVisibility() {
+            const inputPassword = document.getElementById('inputPassword');
+            const btnToggle = document.getElementById('btnTogglePassword');
+
+            if (inputPassword.type === 'password') {
+                inputPassword.type = 'text';
+                btnToggle.innerText = 'Sembunyikan';
+            } else {
+                inputPassword.type = 'password';
+                btnToggle.innerText = 'Lihat';
+            }
+        }
+    </script>
 </body>
 </html>
