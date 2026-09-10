@@ -37,7 +37,7 @@
             background-color: #FFFFFF;
         }
 
-        /* LEFT PANEL: EDITORIAL MAROON */
+        /* ================= KIRI: PANEL EDITORIAL MAROON ================= */
         .left-editorial-panel {
             width: 50%;
             height: 100vh;
@@ -50,11 +50,13 @@
             position: relative;
         }
 
+        /* Top Header Left */
         .brand-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            height: 32px; /* Fixed height disamakan persis */
         }
 
         .brand-logo-group {
@@ -113,6 +115,7 @@
             box-shadow: 0 0 6px #00E676;
         }
 
+        /* Middle Content */
         .editorial-body-center {
             margin-top: auto;
             margin-bottom: auto;
@@ -170,6 +173,7 @@
             max-width: 440px;
         }
 
+        /* Footer Left */
         .editorial-footer {
             border-top: 1px solid rgba(255, 255, 255, 0.12);
             padding-top: 20px;
@@ -208,65 +212,78 @@
             color: rgba(255, 255, 255, 0.35);
         }
 
-        /* RIGHT PANEL: MINIMALIST FORM */
+        /* ================= KANAN: PANEL FORM MINIMALIST ================= */
         .right-form-panel {
             width: 50%;
             height: 100vh;
             background-color: #FFFFFF;
-            padding: 40px 60px;
+            padding: 40px 160px; /* Padding sama persis dengan panel kiri */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow-y: auto;
         }
 
+        /* HEADER KANAN: Menggunakan Flexbox & Height 32px disamakan dengan kiri */
         .form-top-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 10.5px;
+            align-items: center; /* Presisi tengah vertikal */
+            font-size: 11px;
             color: #888888;
+            height: 32px; /* Samakan dengan .brand-top-bar */
+            width: 100%;
         }
 
+        .form-top-meta span {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            line-height: 1;
+        }
+
+        /* FORM CENTER */
         .form-content-center {
-            max-width: 380px;
+            max-width: 440px;
             width: 100%;
             margin: auto;
+            padding: 10px 0;
         }
 
         .portal-internal-tag {
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 800;
             letter-spacing: 1.5px;
             color: var(--brand-red);
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .form-content-center h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
             color: var(--text-dark);
             letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .form-content-center p.desc-text {
-            font-size: 11.5px;
+            font-size: 12.5px;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .role-switch-tabs {
             display: flex;
-            gap: 24px;
+            gap: 28px;
             border-bottom: 1.5px solid #EFEFEF;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .role-tab-item {
-            padding-bottom: 8px;
-            font-size: 12px;
+            padding-bottom: 10px;
+            font-size: 13px;
             font-weight: 700;
             color: #999999;
             cursor: pointer;
@@ -294,37 +311,36 @@
             background-color: #E8F8EE;
             border: 1px solid #C2EAD0;
             border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 10.5px;
+            padding: 12px 16px;
+            font-size: 11.5px;
             color: #1E6B37;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 28px;
             line-height: 1.4;
         }
 
         .rfid-verified-alert i {
             margin-top: 2px;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .input-group-item {
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             width: 100%;
         }
 
-        /* HEADER LABEL FLEXBOX UNTUK MENJAGA KATA SANDI DAN LUPA SANDI TETAP SEJAJAR */
         .label-header-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             width: 100%;
         }
 
         .label-header-flex label {
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 800;
             letter-spacing: 1px;
             color: #555555;
@@ -333,7 +349,7 @@
         }
 
         .btn-lupa-sandi {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--brand-red);
             text-decoration: none;
@@ -353,9 +369,9 @@
         .line-input-wrapper input {
             width: 100%;
             border: none;
-            border-bottom: 1px solid #D8D8D8;
-            padding: 6px 35px 6px 0; /* Memberi ruang di kanan agar text tidak tertutup tombol 'Lihat' */
-            font-size: 12.5px;
+            border-bottom: 1.5px solid #D8D8D8;
+            padding: 8px 40px 8px 0;
+            font-size: 13.5px;
             font-weight: 600;
             color: var(--text-dark);
             outline: none;
@@ -370,7 +386,7 @@
         .btn-toggle-lihat {
             position: absolute;
             right: 0;
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 700;
             color: #888888;
             background: none;
@@ -382,9 +398,9 @@
         .checkbox-remember {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 28px;
-            font-size: 10.5px;
+            gap: 10px;
+            margin-bottom: 32px;
+            font-size: 11.5px;
             color: #555555;
             cursor: pointer;
             user-select: none;
@@ -392,8 +408,8 @@
 
         .checkbox-remember input {
             accent-color: var(--brand-red);
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
         }
 
@@ -402,16 +418,16 @@
             background-color: var(--brand-red);
             color: #FFFFFF;
             border: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 6px;
-            font-size: 11.5px;
+            font-size: 12.5px;
             font-weight: 800;
             letter-spacing: 0.5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             transition: background-color 0.2s;
         }
 
@@ -422,7 +438,7 @@
 </head>
 <body>
 
-    <!-- LEFT PANEL -->
+    <!-- LEFT PANEL: EDITORIAL MAROON -->
     <div class="left-editorial-panel">
         <div class="brand-top-bar">
             <div class="brand-logo-group">
@@ -470,11 +486,11 @@
         </div>
     </div>
 
-    <!-- RIGHT PANEL -->
+    <!-- RIGHT PANEL: MINIMALIST FORM -->
     <div class="right-form-panel">
         <div class="form-top-meta">
             <span>Portal Otentikasi Terpadu</span>
-            <span id="liveClock">Kamis, 10:50:30 WIB</span>
+            <span id="liveClock">Kamis, 13:54:12 WIB</span>
         </div>
 
         <div class="form-content-center">

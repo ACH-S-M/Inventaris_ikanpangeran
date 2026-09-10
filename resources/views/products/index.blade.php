@@ -55,6 +55,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        transition: background 0.2s;
     }
 
     .btn-header-primary {
@@ -69,6 +70,11 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        transition: opacity 0.2s;
+    }
+
+    .btn-header-outline:hover, .btn-header-primary:hover {
+        opacity: 0.9;
     }
 
     /* 4 Summary Cards Grid */
@@ -157,6 +163,7 @@
         font-weight: 700;
         color: var(--color-neutral);
         cursor: pointer;
+        transition: all 0.2s;
     }
 
     .filter-pill.active {
@@ -180,6 +187,7 @@
         font-weight: 700;
         color: var(--color-neutral);
         outline: none;
+        cursor: pointer;
     }
 
     /* Master Product Table */
@@ -261,6 +269,11 @@
 
     .action-icons i {
         cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .action-icons i:hover {
+        color: var(--color-primary);
     }
 
     .btn-table-wo {
@@ -364,9 +377,9 @@
         <p class="page-sub-desc">Kelola spesifikasi formulasi, harga pokok produksi (HPP), harga eceran, dan inventaris Finished Goods (FG) Rengginang Ikan.</p>
     </div>
     <div class="header-actions-group">
-        <button class="btn-header-outline"><i class="fa-solid fa-file-excel"></i> Ekspor Excel/PDF</button>
-        <button class="btn-header-outline"><i class="fa-solid fa-barcode"></i> Cetak Label Barcode</button>
-        <button class="btn-header-primary"><i class="fa-solid fa-plus"></i> + Tambah Produk Baru</button>
+        <button class="btn-header-outline" onclick="exportData('Excel/PDF')"><i class="fa-solid fa-file-excel"></i> Ekspor Excel/PDF</button>
+        <button class="btn-header-outline" onclick="cetakBarcodeMassal()"><i class="fa-solid fa-barcode"></i> Cetak Label Barcode</button>
+        <button class="btn-header-primary" onclick="tambahProdukBaru()"><i class="fa-solid fa-plus"></i> + Tambah Produk Baru</button>
     </div>
 </div>
 
@@ -405,7 +418,7 @@
             <div class="p-mcard-icon" style="background:#FFEBEE; color:var(--color-primary);"><i class="fa-solid fa-triangle-exclamation"></i></div>
         </div>
         <div class="p-mcard-val" style="color:var(--color-primary);">1 <span style="font-size:10px;">SKU di Bawah Buffer</span></div>
-        <div class="p-mcard-sub">Bawang Gurih (1.300 Pcs) <a href="#" style="color:var(--color-primary); font-weight:700; text-decoration:none;">Buat WO &rsaquo;</a></div>
+        <div class="p-mcard-sub">Bawang Gurih (1.300 Pcs) <a href="javascript:void(0)" onclick="jadwalWO('SKU-PC-BWG-250G')" style="color:var(--color-primary); font-weight:700; text-decoration:none;">Buat WO &rsaquo;</a></div>
     </div>
 </div>
 
@@ -413,18 +426,22 @@
 <div class="table-container-card">
     <div class="table-filter-bar">
         <div class="filter-pills-group">
-            <button class="filter-pill active">Semua Produk (12)</button>
-            <button class="filter-pill">Kemasan 250 Gram (6 SKU)</button>
-            <button class="filter-pill">Kemasan 500 Gram (4 SKU)</button>
-            <button class="filter-pill">Curah Resto / Grosir (2 SKU)</button>
-            <button class="filter-pill critical">● Stok Kritis (1)</button>
+            <button class="filter-pill active" onclick="filterCategory(this, 'all')">Semua Produk (12)</button>
+            <button class="filter-pill" onclick="filterCategory(this, '250g')">Kemasan 250 Gram (6 SKU)</button>
+            <button class="filter-pill" onclick="filterCategory(this, '500g')">Kemasan 500 Gram (4 SKU)</button>
+            <button class="filter-pill" onclick="filterCategory(this, 'curah')">Curah Resto / Grosir (2 SKU)</button>
+            <button class="filter-pill critical" onclick="filterCategory(this, 'kritis')">● Stok Kritis (1)</button>
         </div>
         <div style="display:flex; gap:6px;">
-            <select class="select-dropdown">
-                <option>Status: Semua Status</option>
+            <select class="select-dropdown" onchange="filterStatus(this.value)">
+                <option value="all">Status: Semua Status</option>
+                <option value="safe">Status: Stok Aman</option>
+                <option value="alert">Status: Stok Menipis</option>
             </select>
-            <select class="select-dropdown">
-                <option>Urutan: Stok Tertinggi</option>
+            <select class="select-dropdown" onchange="sortProducts(this.value)">
+                <option value="stock_desc">Urutan: Stok Tertinggi</option>
+                <option value="stock_asc">Urutan: Stok Terendah</option>
+                <option value="margin_desc">Urutan: Margin Tertinggi</option>
             </select>
         </div>
     </div>
@@ -433,7 +450,7 @@
     <table class="table-master-product">
         <thead>
             <tr>
-                <th style="width:20px;"><input type="checkbox"></th>
+                <th style="width:20px;"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)"></th>
                 <th>PRODUK & SKU</th>
                 <th>KATEGORI & NETTO</th>
                 <th>FORMULA BOM TERKAIT</th>
@@ -447,8 +464,8 @@
         </thead>
         <tbody>
             <!-- Row 1 -->
-            <tr>
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="250g" data-status="safe">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -459,7 +476,7 @@
                     </div>
                 </td>
                 <td>Pouch Retail Standar<br><span style="font-size:8px; color:#8C6A54;">Gramasi: 250g | Netto: 250 gram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-01A</span><br><span style="font-size:8px; color:#8C6A54;">(Ikan Tenggiri Segar 28%)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-01A')"><i class="fa-solid fa-flask"></i> BoM-REV-01A</span><br><span style="font-size:8px; color:#8C6A54;">(Ikan Tenggiri Segar 28%)</span></td>
                 <td><b>Rp 14.500</b></td>
                 <td><b>Rp 25.000</b></td>
                 <td style="color:#2E7D32; font-weight:700;">42.0%</td>
@@ -467,16 +484,16 @@
                 <td><span class="badge-status-safe">● Stok Aman</span></td>
                 <td>
                     <div class="action-icons">
-                        <i class="fa-regular fa-eye"></i>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-ORI-250G')"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-ORI-250G')"></i>
+                        <i class="fa-solid fa-barcode" title="Cetak Barcode" onclick="cetakBarcodeSingle('SKU : PC-ORI-250G')"></i>
                     </div>
                 </td>
             </tr>
 
             <!-- Row 2 -->
-            <tr>
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="250g" data-status="safe">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -487,7 +504,7 @@
                     </div>
                 </td>
                 <td>Pouch Retail Standar<br><span style="font-size:8px; color:#8C6A54;">Gramasi: 250g | Netto: 250 gram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-02B</span><br><span style="font-size:8px; color:#8C6A54;">(Bubuk Cabai + Daun Jeruk)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-02B')"><i class="fa-solid fa-flask"></i> BoM-REV-02B</span><br><span style="font-size:8px; color:#8C6A54;">(Bubuk Cabai + Daun Jeruk)</span></td>
                 <td><b>Rp 15.200</b></td>
                 <td><b>Rp 26.500</b></td>
                 <td style="color:#2E7D32; font-weight:700;">42.6%</td>
@@ -495,16 +512,16 @@
                 <td><span class="badge-status-safe">● Stok Aman</span></td>
                 <td>
                     <div class="action-icons">
-                        <i class="fa-regular fa-eye"></i>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-PDJ-250G')"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-PDJ-250G')"></i>
+                        <i class="fa-solid fa-barcode" title="Cetak Barcode" onclick="cetakBarcodeSingle('SKU : PC-PDJ-250G')"></i>
                     </div>
                 </td>
             </tr>
 
             <!-- Row 3 -->
-            <tr>
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="250g" data-status="safe">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -515,7 +532,7 @@
                     </div>
                 </td>
                 <td>Pouch Retail Standar<br><span style="font-size:8px; color:#8C6A54;">Gramasi: 250g | Netto: 250 gram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-03A</span><br><span style="font-size:8px; color:#8C6A54;">(Bumbu Balado Manis Pedas)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-03A')"><i class="fa-solid fa-flask"></i> BoM-REV-03A</span><br><span style="font-size:8px; color:#8C6A54;">(Bumbu Balado Manis Pedas)</span></td>
                 <td><b>Rp 15.500</b></td>
                 <td><b>Rp 27.000</b></td>
                 <td style="color:#2E7D32; font-weight:700;">42.5%</td>
@@ -523,16 +540,16 @@
                 <td><span class="badge-status-safe">● Stok Aman</span></td>
                 <td>
                     <div class="action-icons">
-                        <i class="fa-regular fa-eye"></i>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-BLD-250G')"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-BLD-250G')"></i>
+                        <i class="fa-solid fa-barcode" title="Cetak Barcode" onclick="cetakBarcodeSingle('SKU : PC-BLD-250G')"></i>
                     </div>
                 </td>
             </tr>
 
             <!-- Row 4 (Alert Kritis) -->
-            <tr style="background:#FFF9F9;">
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="250g kritis" data-status="alert" style="background:#FFF9F9;">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -543,7 +560,7 @@
                     </div>
                 </td>
                 <td>Pouch Retail Standar<br><span style="font-size:8px; color:#8C6A54;">Gramasi: 250g | Netto: 250 gram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-04C</span><br><span style="font-size:8px; color:#8C6A54;">(Ekstrak Bawang Putih Kating)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-04C')"><i class="fa-solid fa-flask"></i> BoM-REV-04C</span><br><span style="font-size:8px; color:#8C6A54;">(Ekstrak Bawang Putih Kating)</span></td>
                 <td><b>Rp 14.000</b></td>
                 <td><b>Rp 24.500</b></td>
                 <td style="color:#2E7D32; font-weight:700;">42.8%</td>
@@ -552,17 +569,17 @@
                 <td>
                     <div style="display:flex; gap:4px; align-items:center;">
                         <div class="action-icons">
-                            <i class="fa-regular fa-eye"></i>
-                            <i class="fa-regular fa-pen-to-square"></i>
+                            <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-BWG-250G')"></i>
+                            <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-BWG-250G')"></i>
                         </div>
-                        <button class="btn-table-wo">Jadwal WO</button>
+                        <button class="btn-table-wo" onclick="jadwalWO('SKU : PC-BWG-250G')">Jadwal WO</button>
                     </div>
                 </td>
             </tr>
 
             <!-- Row 5 -->
-            <tr>
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="500g" data-status="safe">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -573,7 +590,7 @@
                     </div>
                 </td>
                 <td>Kaleng Tin / Hampers<br><span style="font-size:8px; color:#8C6A54;">Gramasi: 500g | Netto: 500 gram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-05A</span><br><span style="font-size:8px; color:#8C6A54;">(Original Premium + Seal Nitrogen)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-05A')"><i class="fa-solid fa-flask"></i> BoM-REV-05A</span><br><span style="font-size:8px; color:#8C6A54;">(Original Premium + Seal Nitrogen)</span></td>
                 <td><b>Rp 32.000</b></td>
                 <td><b>Rp 55.000</b></td>
                 <td style="color:#2E7D32; font-weight:700;">41.8%</td>
@@ -581,16 +598,16 @@
                 <td><span class="badge-status-safe">● Stok Aman</span></td>
                 <td>
                     <div class="action-icons">
-                        <i class="fa-regular fa-eye"></i>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-KLG-500G')"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-KLG-500G')"></i>
+                        <i class="fa-solid fa-barcode" title="Cetak Barcode" onclick="cetakBarcodeSingle('SKU : PC-KLG-500G')"></i>
                     </div>
                 </td>
             </tr>
 
             <!-- Row 6 -->
-            <tr>
-                <td><input type="checkbox"></td>
+            <tr class="product-row" data-category="curah" data-status="safe">
+                <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
                         <img src="https://via.placeholder.com/40" class="product-thumb" alt="Product">
@@ -601,7 +618,7 @@
                     </div>
                 </td>
                 <td>Dus Master Curah Resto<br><span style="font-size:8px; color:#8C6A54;">Gramasi: Curah (5Kg) | Netto: 5 Kilogram</span></td>
-                <td><span style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-flask"></i> BoM-REV-06RAW</span><br><span style="font-size:8px; color:#8C6A54;">(Proses Jemur Oven Kering)</span></td>
+                <td><span style="color:var(--color-primary); font-weight:700; cursor:pointer;" onclick="lihatBOM('BoM-REV-06RAW')"><i class="fa-solid fa-flask"></i> BoM-REV-06RAW</span><br><span style="font-size:8px; color:#8C6A54;">(Proses Jemur Oven Kering)</span></td>
                 <td><b>Rp 180.000</b></td>
                 <td><b>Rp 290.000</b></td>
                 <td style="color:#2E7D32; font-weight:700;">37.9%</td>
@@ -609,9 +626,9 @@
                 <td><span class="badge-status-safe">● Stok Aman</span></td>
                 <td>
                     <div class="action-icons">
-                        <i class="fa-regular fa-eye"></i>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-regular fa-eye" title="Detail" onclick="detailProduk('SKU : PC-MTH-5KG')"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Edit" onclick="editProduk('SKU : PC-MTH-5KG')"></i>
+                        <i class="fa-solid fa-barcode" title="Cetak Barcode" onclick="cetakBarcodeSingle('SKU : PC-MTH-5KG')"></i>
                     </div>
                 </td>
             </tr>
@@ -620,12 +637,12 @@
 
     <!-- Pagination Footer -->
     <div class="pagination-bar">
-        <div>Menampilkan <b>1 - 6</b> dari <b>12 SKU</b> terdaftar</div>
+        <div>Menampilkan <b id="textShowing">1 - 6</b> dari <b>12 SKU</b> terdaftar</div>
         <div class="pagination-pages">
-            <button class="page-btn"><i class="fa-solid fa-angle-left"></i></button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn"><i class="fa-solid fa-angle-right"></i></button>
+            <button class="page-btn" onclick="pindahHalaman(1)"><i class="fa-solid fa-angle-left"></i></button>
+            <button class="page-btn active" id="btnPage1" onclick="pindahHalaman(1)">1</button>
+            <button class="page-btn" id="btnPage2" onclick="pindahHalaman(2)">2</button>
+            <button class="page-btn" onclick="pindahHalaman(2)"><i class="fa-solid fa-angle-right"></i></button>
         </div>
     </div>
 </div>
@@ -635,7 +652,7 @@
     <!-- Certifications -->
     <div class="widget-box">
         <div class="widget-title"><i class="fa-solid fa-certificate" style="color:var(--color-secondary);"></i> SERTIFIKASI MUTU & STANDAR PANGAN</div>
-        <p style="font-size:9.5px; color:#7A5B47; margin-bottom:8px;">Standar Pabrikasi Pangeran Condet: Seluruh SKU terdaftar telah memenuhi uji laboratorium kadar air < 3.2% untuk kerenyahan optimal, lolos uji mikrobiologi, dan terdaftar resmi.</p>
+        <p style="font-size:9.5px; color:#7A5B47; margin-bottom:8px;">Standar Pabrikasi Pangeran Condet: Seluruh SKU terdaftar telah memenuhi uji laboratorium kadar air &lt; 3.2% untuk kerenyahan optimal, lolos uji mikrobiologi, dan terdaftar resmi.</p>
         <div style="display:flex; gap:8px;">
             <div style="background:#FFF5EE; border:1px solid var(--border-color); padding:6px 10px; border-radius:6px; font-size:9px;">
                 <span style="color:#8C6A54;">Nomor P-IRT Resmi:</span><br>
@@ -678,7 +695,109 @@
                 <span style="font-size:7.5px; color:#8C6A54;">Netto 250g / pack</span>
             </div>
         </div>
+        <div style="margin-top:8px; text-align:right;">
+            <a href="javascript:void(0)" onclick="alert('Membuka Modul Formula BoM Lengkap...')" style="font-size:9px; color:var(--color-primary); font-weight:700; text-decoration:none;">Buka Modul Formula BoM &rsaquo;</a>
+        </div>
     </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    // 1. Export Data
+    function exportData(format) {
+        alert('Mengekspor Master Data Produk & SKU ke format ' + format + '...');
+    }
+
+    // 2. Cetak Barcode Massal & Single
+    function cetakBarcodeMassal() {
+        const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+        if (checkedBoxes.length === 0) {
+            alert('Silakan pilih minimal satu produk dari tabel untuk mencetak label barcode.');
+        } else {
+            alert('Mencetak label barcode untuk ' + checkedBoxes.length + ' produk terpilih...');
+        }
+    }
+
+    function cetakBarcodeSingle(sku) {
+        alert('Mencetak label barcode untuk ' + sku + '...');
+    }
+
+    // 3. Tambah Produk Baru
+    function tambahProdukBaru() {
+        alert('Membuka Form Tambah Master SKU & Produk Baru...');
+    }
+
+    // 4. Filter Kategori (Pill Buttons)
+    function filterCategory(btn, category) {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+
+        const rows = document.querySelectorAll('.product-row');
+        rows.forEach(row => {
+            const rowCat = row.getAttribute('data-category');
+            if (category === 'all' || rowCat.includes(category)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // 5. Filter Dropdown Status
+    function filterStatus(status) {
+        const rows = document.querySelectorAll('.product-row');
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            if (status === 'all' || rowStatus === status) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // 6. Sort Products
+    function sortProducts(sortBy) {
+        alert('Mengurutkan tabel berdasarkan: ' + sortBy);
+    }
+
+    // 7. Checkbox Select All
+    function toggleSelectAll(mainCheckbox) {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => cb.checked = mainCheckbox.checked);
+    }
+
+    // 8. Detail & Edit Produk
+    function detailProduk(sku) {
+        alert('Menampilkan detail spesifikasi ' + sku);
+    }
+
+    function editProduk(sku) {
+        alert('Membuka Form Edit ' + sku);
+    }
+
+    // 9. Jadwal Work Order (WO)
+    function jadwalWO(sku) {
+        alert('Membuat jadwal Work Order (WO) Produksi untuk ' + sku);
+    }
+
+    // 10. Lihat Formula BoM
+    function lihatBOM(bomCode) {
+        alert('Menampilkan Detail Rincian Formulasi ' + bomCode);
+    }
+
+    // 11. Pagination Handler
+    function pindahHalaman(page) {
+        document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
+        if(page === 1) {
+            document.getElementById('btnPage1').classList.add('active');
+            document.getElementById('textShowing').innerText = '1 - 6';
+        } else {
+            document.getElementById('btnPage2').classList.add('active');
+            document.getElementById('textShowing').innerText = '7 - 12';
+        }
+    }
+</script>
+@endpush

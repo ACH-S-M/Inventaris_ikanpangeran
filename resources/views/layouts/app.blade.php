@@ -52,7 +52,7 @@
             border-bottom: 1px solid #FFF0E6;
         }
 
-        .brand-logo-area img { width: 95px; height: auto; }
+        .brand-logo-area img { width: 180px; height: auto; }
 
         .nav-category {
             font-size: 9px;
@@ -68,7 +68,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 10px;
+            padding: 17px 20px;
             margin-bottom: 2px;
             border-radius: 6px;
             color: #5C4333;
@@ -227,7 +227,7 @@
 
     <main class="main-content">
         <div class="top-navbar">
-            <div class="brand-title">Pangeran Condet</div>
+            <div class="brand-title">Pangeran Condet Rengginang Ikan</div>
             <div class="top-search-area">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -236,15 +236,6 @@
                 <button class="btn-action-batch"><i class="fa-solid fa-plus-circle"></i> Buat Batch Baru</button>
                 <div style="display:flex; gap:8px; color:var(--color-neutral); font-size:12px; margin-left:4px;">
                     <i class="fa-regular fa-bell"></i>
-                    <i class="fa-regular fa-clock"></i>
-                    <i class="fa-regular fa-circle-question"></i>
-                </div>
-                <div style="display:flex; align-items:center; gap:6px; margin-left:6px;">
-                    <img src="https://ui-avatars.com/api/?name=Bambang+S&background=B71C1C&color=fff" style="width:26px; height:26px; border-radius:50%;">
-                    <div style="line-height:1;">
-                        <h5 style="font-size:10px; font-weight:700;">Bambang S.</h5>
-                        <p style="font-size:8.5px; color:#8C6A54;">Spv Shift Pagi</p>
-                    </div>
                 </div>
             </div>
         </div>
