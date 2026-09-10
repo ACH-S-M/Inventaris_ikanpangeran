@@ -4,7 +4,6 @@
 
 @push('styles')
 <style>
-    /* Hero Banner Responsif */
     .hero-banner {
         background: linear-gradient(135deg, var(--color-primary) 0%, #8E0E0E 100%);
         border-radius: 10px;
@@ -41,6 +40,7 @@
         font-size: 10.5px;
         font-weight: 700;
         cursor: pointer;
+        transition: opacity 0.2s;
     }
     .btn-hero-trans {
         background: rgba(255,255,255,0.15);
@@ -51,9 +51,10 @@
         font-size: 10.5px;
         font-weight: 700;
         cursor: pointer;
+        transition: background 0.2s;
     }
+    .btn-hero-orange:hover, .btn-hero-trans:hover { opacity: 0.9; }
 
-    /* 4 Metric Cards Grid Auto-fit */
     .metrics-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -89,7 +90,6 @@
     .m-box-val { font-size: 20px; font-weight: 800; color: var(--color-neutral); line-height: 1; margin-bottom: 3px; }
     .m-box-sub { font-size: 9px; color: #7A5B47; }
 
-    /* Section Card Outer */
     .section-card {
         background: #FFF;
         border-radius: 10px;
@@ -125,13 +125,13 @@
         overflow-x: auto;
     }
 
-    /* Batch Item Card */
     .batch-card-revised {
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 10px 12px;
         margin-bottom: 8px;
         background: #FFFAF7;
+        transition: all 0.2s ease;
     }
 
     .batch-head {
@@ -162,7 +162,6 @@
     .step-box-5.done { background: #E8F5E9; border-color: #A5D6A7; color: #2E7D32; }
     .step-box-5.active { background: #FFF3E0; border-color: #FFCC80; color: var(--color-secondary); }
 
-    /* Bottom Split Grid 50:50 */
     .bottom-grid-50 {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -178,13 +177,15 @@
     .table-custom th { text-align: left; padding: 5px 6px; color: #8C6A54; border-bottom: 1px solid var(--border-color); font-size: 8.5px; }
     .table-custom td { padding: 6px; border-bottom: 1px solid #FFF0E6; font-weight: 600; color: var(--color-neutral); }
 
-    .btn-sm-red { background: var(--color-primary); color: #FFF; border: none; padding: 3px 6px; border-radius: 4px; font-size: 8.5px; font-weight: 700; cursor: pointer; }
-    .btn-sm-brown { background: var(--color-neutral); color: #FFF; border: none; padding: 3px 6px; border-radius: 4px; font-size: 8.5px; font-weight: 700; cursor: pointer; }
+    .btn-sm-red { background: var(--color-primary); color: #FFF; border: none; padding: 4px 8px; border-radius: 4px; font-size: 8.5px; font-weight: 700; cursor: pointer; }
+    .btn-sm-brown { background: var(--color-neutral); color: #FFF; border: none; padding: 4px 8px; border-radius: 4px; font-size: 8.5px; font-weight: 700; cursor: pointer; }
+    .btn-sm-red:hover, .btn-sm-brown:hover { opacity: 0.9; }
 </style>
 @endpush
 
 @section('content')
 
+<!-- Hero Banner -->
 <div class="hero-banner">
     <div class="hero-content">
         <div class="hero-tag"><i class="fa-solid fa-gear"></i> SISTEM MANUFAKTUR TERINTEGRASI</div>
@@ -192,11 +193,12 @@
         <p>Pangeran Condet — Rengginang Ikan Segar: "Enak, Gurih, Crispy, Bergizi"</p>
     </div>
     <div class="hero-actions">
-        <button class="btn-hero-orange"><i class="fa-solid fa-play"></i> Mulai Batch Baru</button>
-        <button class="btn-hero-trans"><i class="fa-solid fa-plus"></i> Input Stok Masuk</button>
+        <button class="btn-hero-orange" onclick="btnMulaiBatch()"><i class="fa-solid fa-play"></i> Mulai Batch Baru</button>
+        <button class="btn-hero-trans" onclick="btnInputStok()"><i class="fa-solid fa-plus"></i> Input Stok Masuk</button>
     </div>
 </div>
 
+<!-- 4 Metric Cards -->
 <div class="metrics-grid">
     <div class="m-box" style="border-bottom: 3px solid #2E7D32;">
         <div class="m-box-top">
@@ -235,15 +237,16 @@
     </div>
 </div>
 
+<!-- Monitoring Produksi Section -->
 <div class="section-card">
     <div class="section-header">
         <div>
-            <div class="section-title">Monitoring Produksi Real-Time <span class="badge-count">3 BATCH AKTIF</span> <span style="background:#FFEBEE; color:var(--color-primary); font-size:8.5px; padding:2px 5px; border-radius:3px; font-weight:700;">● Perlu 1 Konfirmasi Admin</span></div>
+            <div class="section-title">Monitoring Produksi Real-Time <span class="badge-count">3 BATCH AKTIF</span> <span style="background:#FFEBEE; color:var(--color-primary); font-size:8.5px; padding:2px 5px; border-radius:3px; font-weight:700;" id="badgeAlertAdmin">● Perlu 1 Konfirmasi Admin</span></div>
             <p style="font-size:9.5px; color:#7A5B47; margin-top:2px;">Alur kendali produksi 5 tahap dengan otorisasi & verifikasi admin pada setiap perpindahan proses</p>
         </div>
         <div style="display:flex; gap:5px;">
-            <button style="background:#FFF; border:1px solid var(--border-color); padding:4px 8px; border-radius:5px; font-size:9.5px; font-weight:700;"><i class="fa-solid fa-filter"></i> Filter List</button>
-            <button style="background:var(--color-primary); color:#FFF; border:none; padding:4px 8px; border-radius:5px; font-size:9.5px; font-weight:700;"><i class="fa-solid fa-check-double"></i> Verifikasi Terpilih</button>
+            <button style="background:#FFF; border:1px solid var(--border-color); padding:4px 8px; border-radius:5px; font-size:9.5px; font-weight:700; cursor:pointer;" onclick="btnFilterList()"><i class="fa-solid fa-filter"></i> Filter List</button>
+            <button style="background:var(--color-primary); color:#FFF; border:none; padding:4px 8px; border-radius:5px; font-size:9.5px; font-weight:700; cursor:pointer;" onclick="btnVerifikasiTerpilih()"><i class="fa-solid fa-check-double"></i> Verifikasi Terpilih</button>
         </div>
     </div>
 
@@ -257,20 +260,20 @@
     </div>
 
     <!-- Batch 1 -->
-    <div class="batch-card-revised">
+    <div class="batch-card-revised" id="batchCard089">
         <div class="batch-head">
             <div>
                 <span style="font-size:11.5px; font-weight:800; color:var(--color-neutral);">#BCH-RG-2024-089</span> 
                 <span style="background:#FFF3E0; color:var(--color-secondary); font-weight:700; font-size:8.5px; padding:1px 5px; border-radius:3px;">Rengginang Ikan Original Super</span>
-                <span style="background:#FFF8E1; color:#B78103; font-weight:700; font-size:8.5px; padding:1px 5px; border-radius:3px; margin-left:3px;">⏳ Menunggu Konfirmasi Admin</span>
+                <span style="background:#FFF8E1; color:#B78103; font-weight:700; font-size:8.5px; padding:1px 5px; border-radius:3px; margin-left:3px;" id="statusBadge089">⏳ Menunggu Konfirmasi Admin</span>
                 <div style="font-size:9.5px; color:#7A5B47; margin-top:1px;">Volume: 500 Kg (~1.000 Pouch) • Line Oven Dehydrator A • Spv: Tim Olah A</div>
             </div>
-            <button class="btn-sm-red" style="padding:4px 8px; font-size:9.5px;"><i class="fa-solid fa-check"></i> Konfirmasi Lanjut Tahap 3</button>
+            <button class="btn-sm-red" style="padding:4px 8px; font-size:9.5px;" id="btnKonfirmasi089" onclick="konfirmasiLanjutTahap()"><i class="fa-solid fa-check"></i> Konfirmasi Lanjut Tahap 3</button>
         </div>
         <div class="steps-flow-5">
             <div class="step-box-5 done"><i class="fa-solid fa-check"></i> 1. Olah Bahan Baku<br><span style="font-size:7.5px; opacity:0.8;">Terverifikasi</span></div>
-            <div class="step-box-5 active"><i class="fa-solid fa-fire"></i> 2. Jemur / Dehidrasi<br><span style="font-size:7.5px;">Siap Verifikasi</span></div>
-            <div class="step-box-5"><i class="fa-solid fa-clock"></i> 3. Penggorengan<br><span style="font-size:7.5px; color:#aaa;">Menunggu</span></div>
+            <div class="step-box-5 active" id="step2Box089"><i class="fa-solid fa-fire"></i> 2. Jemur / Dehidrasi<br><span style="font-size:7.5px;">Siap Verifikasi</span></div>
+            <div class="step-box-5" id="step3Box089"><i class="fa-solid fa-clock"></i> 3. Penggorengan<br><span style="font-size:7.5px; color:#aaa;">Menunggu</span></div>
             <div class="step-box-5"><i class="fa-solid fa-clock"></i> 4. Pack Produk<br><span style="font-size:7.5px; color:#aaa;">Menunggu</span></div>
             <div class="step-box-5"><i class="fa-solid fa-clock"></i> 5. Selesai<br><span style="font-size:7.5px; color:#aaa;">Gudang FG</span></div>
         </div>
@@ -285,7 +288,7 @@
                 <span style="background:#E8F5E9; color:#2E7D32; font-weight:700; font-size:8.5px; padding:1px 5px; border-radius:3px; margin-left:3px;">✔ Terverifikasi Admin</span>
                 <div style="font-size:9.5px; color:#7A5B47; margin-top:1px;">Volume: 150 Kg (~300 Pouch) • Wajan Otomatis Line B • Operator: Tim Goreng B</div>
             </div>
-            <button style="background:#FFF; border:1px solid var(--border-color); font-size:9px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-file-lines"></i> Cek Lembar Uji QA</button>
+            <button style="background:#FFF; border:1px solid var(--border-color); font-size:9px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="alert('Lembar Uji QA:\n- Kadar Air: 2.8% (LULUS)\n- Uji Kerenyahan: Optimal\n- Uji Organoleptik: Sesuai Standar')"><i class="fa-solid fa-file-lines"></i> Cek Lembar Uji QA</button>
         </div>
         <div class="steps-flow-5">
             <div class="step-box-5 done"><i class="fa-solid fa-check"></i> 1. Olah Bahan Baku</div>
@@ -305,7 +308,7 @@
                 <span style="background:#E8F5E9; color:#2E7D32; font-weight:700; font-size:8.5px; padding:1px 5px; border-radius:3px; margin-left:3px;">✔ Terverifikasi Admin</span>
                 <div style="font-size:9.5px; color:#7A5B47; margin-top:1px;">Volume: 500 Kg (~1.000 Pouch) • Mesin Nitrogen Sealing • Tim Kemas Otomatis</div>
             </div>
-            <button style="background:#2E7D32; color:#FFF; border:none; font-size:9.5px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-boxes-packing"></i> Transfer ke Gudang FG</button>
+            <button style="background:#2E7D32; color:#FFF; border:none; font-size:9.5px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="alert('Transfer Berhasil!\n1.000 Pouch produk telah dipindahkan ke Gudang Produk Jadi (FG-01).')"><i class="fa-solid fa-boxes-packing"></i> Transfer ke Gudang FG</button>
         </div>
         <div class="steps-flow-5">
             <div class="step-box-5 done"><i class="fa-solid fa-check"></i> 1. Olah Bahan Baku</div>
@@ -318,11 +321,11 @@
 </div>
 
 <div class="bottom-grid-50">
-    <!-- Stok Produk Jadi -->
+    <!-- Stok Produk Jadi Table -->
     <div class="section-card">
         <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-boxes-stacked" style="color:#2E7D32;"></i> Overview Stok Produk Jadi (Siap Distribusi)</div>
-            <a href="#" style="font-size:9.5px; color:var(--color-secondary); font-weight:700; text-decoration:none;">Katalog Lengkap &rsaquo;</a>
+            <a href="{{ route('products.index') }}" style="font-size:9.5px; color:var(--color-secondary); font-weight:700; text-decoration:none;">Katalog Lengkap &rsaquo;</a>
         </div>
         <p style="font-size:9px; color:#7A5B47; margin-bottom:8px;">Inventaris Rengginang siap jual dalam kemasan pouch yang telah dipisahkan</p>
 
@@ -344,7 +347,7 @@
                     <td><b>5.800 Pcs</b></td>
                     <td>#BCH-088</td>
                     <td><span style="background:#E8F5E9; color:#2E7D32; padding:1px 4px; border-radius:3px; font-size:8px;">Ready Kirim</span></td>
-                    <td><button class="btn-sm-brown" onclick="document.getElementById('modalAlokasiStok').style.display='flex'">Alokasi PO</button></td>
+                    <td><button class="btn-sm-brown" onclick="bukaModalAlokasi()">Alokasi PO</button></td>
                 </tr>
                 <tr>
                     <td>SKU-FG-002-250G</td>
@@ -352,7 +355,7 @@
                     <td><b>4.150 Pcs</b></td>
                     <td>#BCH-087</td>
                     <td><span style="background:#E8F5E9; color:#2E7D32; padding:1px 4px; border-radius:3px; font-size:8px;">Ready Kirim</span></td>
-                    <td><button class="btn-sm-brown">Alokasi PO</button></td>
+                    <td><button class="btn-sm-brown" onclick="bukaModalAlokasi()">Alokasi PO</button></td>
                 </tr>
                 <tr>
                     <td>SKU-FG-003-250G</td>
@@ -360,7 +363,7 @@
                     <td><b>3.600 Pcs</b></td>
                     <td>#BCH-086</td>
                     <td><span style="background:#E8F5E9; color:#2E7D32; padding:1px 4px; border-radius:3px; font-size:8px;">Ready Kirim</span></td>
-                    <td><button class="btn-sm-brown">Alokasi PO</button></td>
+                    <td><button class="btn-sm-brown" onclick="bukaModalAlokasi()">Alokasi PO</button></td>
                 </tr>
                 <tr>
                     <td>SKU-FG-004-250G</td>
@@ -368,13 +371,13 @@
                     <td><b style="color:var(--color-primary);">1.300 Pcs</b></td>
                     <td>#BCH-085</td>
                     <td><span style="background:#FFF3E0; color:var(--color-secondary); padding:1px 4px; border-radius:3px; font-size:8px;">Stok Menipis</span></td>
-                    <td><button class="btn-sm-red">Prioritas WO</button></td>
+                    <td><button class="btn-sm-red" onclick="alert('Membuka form pembuatan Work Order (WO) prioritas untuk SKU-FG-004-250G...')">Prioritas WO</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Restock Alert Bahan Baku -->
+    <!-- Restock Alert Bahan Baku Table -->
     <div class="section-card">
         <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--color-primary);"></i> Restock Alert Bahan Baku Kritis</div>
@@ -396,38 +399,106 @@
                     <td>Ikan Tenggiri Giling<br><span style="font-size:8px; color:var(--color-primary);">Kritis (-102 Kg)</span></td>
                     <td style="color:var(--color-primary);"><b>48 Kg</b></td>
                     <td>150 Kg</td>
-                    <td><button class="btn-sm-red">Pesan PO</button></td>
+                    <td><button class="btn-sm-red" onclick="pesanBahanBaku('Ikan Tenggiri Giling')">Pesan PO</button></td>
                 </tr>
                 <tr>
                     <td>Minyak Kelapa Sawit<br><span style="font-size:8px; color:var(--color-primary);">Kritis (-155 L)</span></td>
                     <td style="color:var(--color-primary);"><b>95 L</b></td>
                     <td>250 L</td>
-                    <td><button class="btn-sm-red">Pesan PO</button></td>
+                    <td><button class="btn-sm-red" onclick="pesanBahanBaku('Minyak Kelapa Sawit')">Pesan PO</button></td>
                 </tr>
                 <tr>
                     <td>Kemasan Pouch 250g<br><span style="font-size:8px; color:var(--color-primary);">Kritis (-2.800 Pcs)</span></td>
                     <td style="color:var(--color-primary);"><b>1.200 Pcs</b></td>
                     <td>4.000 Pcs</td>
-                    <td><button class="btn-sm-red">Pesan PO</button></td>
+                    <td><button class="btn-sm-red" onclick="pesanBahanBaku('Kemasan Pouch 250g')">Pesan PO</button></td>
                 </tr>
                 <tr>
                     <td>Beras Ketan Putih<br><span style="font-size:8px; color:#B78103;">Perhatian</span></td>
                     <td><b>210 Kg</b></td>
                     <td>300 Kg</td>
-                    <td><button class="btn-sm-brown">Pesan PO</button></td>
+                    <td><button class="btn-sm-brown" onclick="pesanBahanBaku('Beras Ketan Putih')">Pesan PO</button></td>
                 </tr>
                 <tr>
                     <td>Bumbu Rempah & Bawang<br><span style="font-size:8px; color:#B78103;">Perhatian</span></td>
                     <td><b>35 Kg</b></td>
                     <td>50 Kg</td>
-                    <td><button class="btn-sm-brown">Pesan PO</button></td>
+                    <td><button class="btn-sm-brown" onclick="pesanBahanBaku('Bumbu Rempah & Bawang')">Pesan PO</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-{{-- Panggil Modal Alokasi Stok --}}
-    @include('components.modals.alokasi-stok')
+{{-- Panggil Component Modal Alokasi Stok --}}
+@include('components.modals.alokasi-stok')
 
 @endsection
+
+@push('scripts')
+<script>
+    // 1. Membuka Modal Alokasi Stok PO
+    function bukaModalAlokasi() {
+        const modal = document.getElementById('modalAlokasiStok');
+        if (modal) {
+            modal.style.display = 'flex';
+        } else {
+            alert('Membuka modal alokasi stok...');
+        }
+    }
+
+    // 2. Button Mulai Batch Baru
+    function btnMulaiBatch() {
+        alert('Form Pembuatan Batch Produksi Baru:\nSilakan pilih varian resep BoM dan target volume produksi.');
+    }
+
+    // 3. Button Input Stok Masuk
+    function btnInputStok() {
+        alert('Form Entry Stok Masuk:\nPenerimaan bahan baku atau retur produk dari supplier.');
+    }
+
+    // 4. Filter List Batch
+    function btnFilterList() {
+        alert('Menampilkan Opsi Filter Batch:\n- Berdasarkan Shift\n- Berdasarkan Line Mesin\n- Berdasarkan Varian Rasa');
+    }
+
+    // 5. Verifikasi Terpilih (Batch)
+    function btnVerifikasiTerpilih() {
+        alert('Berhasil mengonfirmasi seluruh batch yang memenuhi syarat.');
+    }
+
+    // 6. Konfirmasi Lanjut Tahap 3 (Batch #BCH-RG-2024-089)
+    function konfirmasiLanjutTahap() {
+        const badge = document.getElementById('statusBadge089');
+        const alertBadge = document.getElementById('badgeAlertAdmin');
+        const btn = document.getElementById('btnKonfirmasi089');
+        const step2 = document.getElementById('step2Box089');
+        const step3 = document.getElementById('step3Box089');
+
+        if (confirm('Apakah Anda yakin ingin mengonfirmasi kelanjutan Batch #BCH-RG-2024-089 ke Tahap 3 (Penggorengan)?')) {
+            badge.innerText = '✔ Terverifikasi Admin';
+            badge.style.background = '#E8F5E9';
+            badge.style.color = '#2E7D32';
+
+            alertBadge.style.display = 'none';
+
+            step2.className = 'step-box-5 done';
+            step2.innerHTML = '<i class="fa-solid fa-check"></i> 2. Jemur / Dehidrasi';
+
+            step3.className = 'step-box-5 active';
+            step3.style.background = '#FFEBEE';
+            step3.style.borderColor = '#FFCDD2';
+            step3.style.color = 'var(--color-primary)';
+            step3.innerHTML = '<i class="fa-solid fa-spinner"></i> 3. Penggorengan<br><span style="font-size:7.5px;">Proses Berjalan</span>';
+
+            btn.style.display = 'none';
+            alert('Batch #BCH-RG-2024-089 berhasil dipindahkan ke Tahap 3!');
+        }
+    }
+
+    // 7. Pesan Bahan Baku
+    function pesanBahanBaku(namaBahan) {
+        alert('Form Pemesanan Purchase Order (PO):\nMembuat draf pesanan stok untuk ' + namaBahan + '.');
+    }
+</script>
+@endpush
