@@ -138,52 +138,21 @@
         margin-bottom: 14px;
     }
 
-    /* Filter Pills & Bar */
+    /* Filter Bar (Rapi & Bersih) */
     .table-filter-bar {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end; /* Menggeser dropdown filter ke pojok kanan */
         align-items: center;
         margin-bottom: 12px;
-        flex-wrap: wrap;
         gap: 8px;
-    }
-
-    .filter-pills-group {
-        display: flex;
-        gap: 5px;
-        flex-wrap: wrap;
-    }
-
-    .filter-pill {
-        background: #FFF5EE;
-        border: 1px solid var(--border-color);
-        padding: 4px 8px;
-        border-radius: 5px;
-        font-size: 9px;
-        font-weight: 700;
-        color: var(--color-neutral);
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .filter-pill.active {
-        background: var(--color-primary);
-        color: #FFF;
-        border-color: var(--color-primary);
-    }
-
-    .filter-pill.critical {
-        background: #FFEBEE;
-        color: var(--color-primary);
-        border-color: #FFCDD2;
     }
 
     .select-dropdown {
         background: #FFF5EE;
         border: 1px solid var(--border-color);
-        padding: 4px 8px;
-        border-radius: 5px;
-        font-size: 9px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 9.5px;
         font-weight: 700;
         color: var(--color-neutral);
         outline: none;
@@ -379,7 +348,7 @@
     <div class="header-actions-group">
         <button class="btn-header-outline" onclick="exportData('Excel/PDF')"><i class="fa-solid fa-file-excel"></i> Ekspor Excel/PDF</button>
         <button class="btn-header-outline" onclick="cetakBarcodeMassal()"><i class="fa-solid fa-barcode"></i> Cetak Label Barcode</button>
-        <button class="btn-header-primary" onclick="tambahProdukBaru()"><i class="fa-solid fa-plus"></i> + Tambah Produk Baru</button>
+        <button class="btn-header-primary" onclick="tambahProdukBaru()"><i class="fa-solid fa-plus"></i> Tambah Produk Baru</button>
     </div>
 </div>
 
@@ -425,13 +394,6 @@
 <!-- Table Card Container -->
 <div class="table-container-card">
     <div class="table-filter-bar">
-        <div class="filter-pills-group">
-            <button class="filter-pill active" onclick="filterCategory(this, 'all')">Semua Produk (12)</button>
-            <button class="filter-pill" onclick="filterCategory(this, '250g')">Kemasan 250 Gram (6 SKU)</button>
-            <button class="filter-pill" onclick="filterCategory(this, '500g')">Kemasan 500 Gram (4 SKU)</button>
-            <button class="filter-pill" onclick="filterCategory(this, 'curah')">Curah Resto / Grosir (2 SKU)</button>
-            <button class="filter-pill critical" onclick="filterCategory(this, 'kritis')">● Stok Kritis (1)</button>
-        </div>
         <div style="display:flex; gap:6px;">
             <select class="select-dropdown" onchange="filterStatus(this.value)">
                 <option value="all">Status: Semua Status</option>
@@ -464,7 +426,7 @@
         </thead>
         <tbody>
             <!-- Row 1 -->
-            <tr class="product-row" data-category="250g" data-status="safe">
+            <tr class="product-row" data-status="safe">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -492,7 +454,7 @@
             </tr>
 
             <!-- Row 2 -->
-            <tr class="product-row" data-category="250g" data-status="safe">
+            <tr class="product-row" data-status="safe">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -520,7 +482,7 @@
             </tr>
 
             <!-- Row 3 -->
-            <tr class="product-row" data-category="250g" data-status="safe">
+            <tr class="product-row" data-status="safe">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -548,7 +510,7 @@
             </tr>
 
             <!-- Row 4 (Alert Kritis) -->
-            <tr class="product-row" data-category="250g kritis" data-status="alert" style="background:#FFF9F9;">
+            <tr class="product-row" data-status="alert" style="background:#FFF9F9;">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -578,7 +540,7 @@
             </tr>
 
             <!-- Row 5 -->
-            <tr class="product-row" data-category="500g" data-status="safe">
+            <tr class="product-row" data-status="safe">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -606,7 +568,7 @@
             </tr>
 
             <!-- Row 6 -->
-            <tr class="product-row" data-category="curah" data-status="safe">
+            <tr class="product-row" data-status="safe">
                 <td><input type="checkbox" class="row-checkbox"></td>
                 <td>
                     <div class="product-info-cell">
@@ -729,23 +691,7 @@
         alert('Membuka Form Tambah Master SKU & Produk Baru...');
     }
 
-    // 4. Filter Kategori (Pill Buttons)
-    function filterCategory(btn, category) {
-        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-
-        const rows = document.querySelectorAll('.product-row');
-        rows.forEach(row => {
-            const rowCat = row.getAttribute('data-category');
-            if (category === 'all' || rowCat.includes(category)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    // 5. Filter Dropdown Status
+    // 4. Filter Dropdown Status
     function filterStatus(status) {
         const rows = document.querySelectorAll('.product-row');
         rows.forEach(row => {
@@ -758,18 +704,18 @@
         });
     }
 
-    // 6. Sort Products
+    // 5. Sort Products
     function sortProducts(sortBy) {
         alert('Mengurutkan tabel berdasarkan: ' + sortBy);
     }
 
-    // 7. Checkbox Select All
+    // 6. Checkbox Select All
     function toggleSelectAll(mainCheckbox) {
         const checkboxes = document.querySelectorAll('.row-checkbox');
         checkboxes.forEach(cb => cb.checked = mainCheckbox.checked);
     }
 
-    // 8. Detail & Edit Produk
+    // 7. Detail & Edit Produk
     function detailProduk(sku) {
         alert('Menampilkan detail spesifikasi ' + sku);
     }
@@ -778,17 +724,17 @@
         alert('Membuka Form Edit ' + sku);
     }
 
-    // 9. Jadwal Work Order (WO)
+    // 8. Jadwal Work Order (WO)
     function jadwalWO(sku) {
         alert('Membuat jadwal Work Order (WO) Produksi untuk ' + sku);
     }
 
-    // 10. Lihat Formula BoM
+    // 9. Lihat Formula BoM
     function lihatBOM(bomCode) {
         alert('Menampilkan Detail Rincian Formulasi ' + bomCode);
     }
 
-    // 11. Pagination Handler
+    // 10. Pagination Handler
     function pindahHalaman(page) {
         document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
         if(page === 1) {
